@@ -29,7 +29,7 @@ kotlin {
 
 bukkit {
     main = "com.github.themeinerlp.attollo.Attollo"
-    apiVersion = "1.17"
+    apiVersion = "1.16.5"
     authors = listOf("TheMeinerLP")
 }
 

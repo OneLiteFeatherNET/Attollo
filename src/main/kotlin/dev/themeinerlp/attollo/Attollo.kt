@@ -14,6 +14,6 @@ class Attollo : JavaPlugin() {
     override fun onEnable() {
         elevatorBlock = Material.matchMaterial(config.getString("elevatorBlock") ?: "DAYLIGHT_DETECTOR")
             ?: Material.DAYLIGHT_DETECTOR
-        server.pluginManager.registerEvents(AttolloListener(), this)
+        server.pluginManager.registerEvents(AttolloListener(this), this)
     }
 }

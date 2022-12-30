@@ -1,5 +1,6 @@
 package dev.themeinerlp.attollo.listener
 
+import dev.themeinerlp.attollo.Attollo
 import dev.themeinerlp.attollo.USE_PERMISSION
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -8,7 +9,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.player.PlayerToggleSneakEvent
 
-class AttolloListener : Listener {
+class AttolloListener(private val attollo: Attollo) : Listener {
 
     @EventHandler
     fun onJump(event: PlayerMoveEvent) {
@@ -31,7 +32,7 @@ class AttolloListener : Listener {
         val location = player.location
         val block = location.block
 
-        if (block.type != Material.DAYLIGHT_DETECTOR) return
+        if (block.type != attollo.elevatorBlock) return
 
         val world = block.world
         val height = world.maxHeight
@@ -41,11 +42,11 @@ class AttolloListener : Listener {
             ((blockLocation.blockY + 1)..height).map {
                 world.getBlockAt(blockLocation.blockX, it, blockLocation.blockZ)
             }
-                .first { it.type == Material.DAYLIGHT_DETECTOR }.location
+                .first { it.type == attollo.elevatorBlock }.location
         } else {
             ((blockLocation.blockY - 1) downTo depth).map {
                 world.getBlockAt(blockLocation.blockX, it, blockLocation.blockZ)
-            }.first { it.type == Material.DAYLIGHT_DETECTOR }.location
+            }.first { it.type == attollo.elevatorBlock }.location
         }
         found.yaw = location.yaw
         found.pitch = location.pitch

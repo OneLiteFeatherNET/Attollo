@@ -1,0 +1,3 @@
+# Allows to change the elevator block
+# Default is: DAYLIGHT_DETECTOR
+elevatorBlock: 'DAYLIGHT_DETECTOR'

@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerToggleSneakEvent
 class AttolloListener(private val attollo: Attollo) : Listener {
 
     @EventHandler
-    fun onJump(event: PlayerMoveEvent) {
+    fun onUp(event: PlayerMoveEvent) {
         val player = event.player
         if (event.to.y <= event.from.y) return
         if (event.to.y - event.from.y <= 0.125) return
@@ -54,7 +54,7 @@ class AttolloListener(private val attollo: Attollo) : Listener {
         if (modifiedLocation.block.type != Material.AIR) {
             return
         }
-       player.teleport(modifiedLocation)
+       player.teleportAsync(modifiedLocation)
     }
 
 }

@@ -16,3 +16,13 @@ Hangar: https://hangar.papermc.io/OneLiteFeather/Attollo
 Modrinth: https://modrinth.com/plugin/attollo
 
 Discord: https://discord.onelitefeather.de
+
+## Permissions
+- attollo.use - Allows the player to use the elevator
+
+## Configuration
+```yaml
+# Allows to change the elevator block
+# Default is: DAYLIGHT_DETECTOR
+elevatorBlock: 'DAYLIGHT_DETECTOR'
+```

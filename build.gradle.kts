@@ -1,10 +1,14 @@
-
+import io.papermc.hangarpublishplugin.model.Platforms
 import net.minecrell.pluginyml.bukkit.BukkitPluginDescription.Permission.Default
 plugins {
     kotlin("jvm") version "1.8.10"
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("xyz.jpenilla.run-paper") version "2.0.1"
     id("net.minecrell.plugin-yml.bukkit") version "0.5.2"
+    id("io.papermc.hangar-publish-plugin") version "0.0.3"
+    id("com.modrinth.minotaur") version "2.+"
+    id("org.jetbrains.changelog") version "2.0.0"
+
 }
 
 group = "dev.themeinerlp"
@@ -57,14 +61,47 @@ tasks {
 }
 
 version = if (System.getenv().containsKey("CI")) {
-    val releaseOrSnapshot = if (System.getenv("CI_COMMIT_BRANCH").equals("main", true)) {
-        ""
-    } else if(System.getenv("CI_COMMIT_BRANCH").equals("test", true)) {
-        "-PREVIEW"
+    val finalVersion = if (System.getenv("GITHUB_REF_NAME").equals("main")) {
+        "$baseVersion-RELEASE"
     } else {
-        "-SNAPSHOT"
+        baseVersion + "-SNAPSHOT+" + System.getenv("SHA_SHORT")
     }
-    "$baseVersion$releaseOrSnapshot+${System.getenv("CI_COMMIT_SHORT_SHA")}"
+    finalVersion
 } else {
-    "$baseVersion-SNAPSHOT"
+    baseVersion
+}
+
+changelog {
+    version.set(baseVersion)
+    path.set("${project.projectDir}/CHANGELOG.md")
+    header.set(provider { "[${version.get()}] - ${org.jetbrains.changelog.date()}" })
+    itemPrefix.set("-")
+    keepUnreleasedSection.set(true)
+    unreleasedTerm.set("[Unreleased]")
+    groups.set(listOf("Added", "Changed", "Deprecated", "Removed", "Fixed", "Security"))
+}
+
+hangarPublish {
+    if (System.getenv().containsKey("CI")) {
+        publications.register("Attollo") {
+            val finalVersion = if (System.getenv("GITHUB_REF_NAME").equals("main")) {
+                "$baseVersion-RELEASE"
+            } else {
+                baseVersion + "-SNAPSHOT+" + System.getenv("SHA_SHORT")
+            }
+            version.set(finalVersion)
+            channel.set(System.getenv("HANGAR_CHANNEL"))
+            changelog.set(project.changelog.renderItem(project.changelog.get(baseVersion)))
+            apiKey.set(System.getenv("HANGAR_SECRET"))
+            owner.set("OneLiteFeather")
+            slug.set("Attollo")
+
+            platforms {
+                register(Platforms.PAPER) {
+                    jar.set(tasks.shadowJar.flatMap { it.archiveFile })
+                    platformVersions.set(listOf("1.16.5","1.17","1.18","1.19"))
+                }
+            }
+        }
+    }
 }

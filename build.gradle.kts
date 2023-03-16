@@ -1,7 +1,7 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+import net.minecrell.pluginyml.bukkit.BukkitPluginDescription.Permission.Default
 plugins {
-    kotlin("jvm") version "1.7.22"
+    kotlin("jvm") version "1.8.10"
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("xyz.jpenilla.run-paper") version "2.0.1"
     id("net.minecrell.plugin-yml.bukkit") version "0.5.2"
@@ -17,11 +17,15 @@ repositories {
 }
 
 dependencies {
-    // compileOnly("io.papermc.paper:paper-api:$minecraftVersion-R0.1-SNAPSHOT")
     compileOnly("com.destroystokyo.paper:paper-api:$minecraftVersion-R0.1-SNAPSHOT")
 }
 
 kotlin {
+    /*sourceSets.all {
+        languageSettings {
+            languageVersion = "2.0"
+        }
+    }*/
     jvmToolchain {
         languageVersion.set(JavaLanguageVersion.of(17))
     }
@@ -31,11 +35,19 @@ bukkit {
     main = "com.github.themeinerlp.attollo.Attollo"
     apiVersion = "1.16.5"
     authors = listOf("TheMeinerLP")
+
+    permissions {
+        register("attollo.use") {
+            description = "Allows the player to use the plugin"
+            default = Default.TRUE
+        }
+    }
 }
 
 tasks {
     compileKotlin {
         kotlinOptions {
+            useK2 = true
             jvmTarget = "17"
         }
     }

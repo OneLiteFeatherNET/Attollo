@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [Unreleased]
 
 ### Added
 - Github actions flow
@@ -9,8 +9,14 @@
 - Better readme
 - Codeowners
 - License
+- Contributing
+- Changelog
+- Code of conduct
+- Pull request template
+- Issue template
 ### Changed
 - Kotlin Compiler to K2
+
 ### Deprecated
 
 ### Removed

@@ -69,7 +69,6 @@ version = if (System.getenv().containsKey("CI")) {
 changelog {
     version.set(baseVersion)
     path.set("${project.projectDir}/CHANGELOG.md")
-    header.set(provider { "[${version.get()}] - ${org.jetbrains.changelog.date()}" })
     itemPrefix.set("-")
     keepUnreleasedSection.set(true)
     unreleasedTerm.set("[Unreleased]")

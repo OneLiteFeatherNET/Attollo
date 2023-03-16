@@ -25,11 +25,6 @@ dependencies {
 }
 
 kotlin {
-    /*sourceSets.all {
-        languageSettings {
-            languageVersion = "2.0"
-        }
-    }*/
     jvmToolchain {
         languageVersion.set(JavaLanguageVersion.of(17))
     }
@@ -102,6 +97,26 @@ hangarPublish {
                     platformVersions.set(listOf("1.16.5","1.17","1.18","1.19"))
                 }
             }
+        }
+    }
+}
+if (System.getenv().containsKey("CI")) {
+    modrinth {
+        token.set(System.getenv("MODRINTH_TOKEN"))
+        projectId.set("ULt9SvKn")
+        val finalVersion = if (System.getenv("GITHUB_REF_NAME").equals("main")) {
+            "$baseVersion-RELEASE"
+        } else {
+            baseVersion + "-SNAPSHOT+" + System.getenv("SHA_SHORT")
+        }
+        versionNumber.set(finalVersion)
+        versionType.set(System.getenv("MODRINTH_CHANNEL"))
+        uploadFile.set(tasks.shadowJar as Any)
+        gameVersions.addAll(listOf("1.16.5","1.17","1.17.1","1.18","1.18.1","1.18.2","1.19", "1.19.1", "1.19.2", "1.19.3","1.19.4"))
+        loaders.add("paper")
+        loaders.add("bukkit")
+        changelog.set(project.changelog.renderItem(project.changelog.get(baseVersion)))
+        dependencies { // A special DSL for creating dependencies
         }
     }
 }

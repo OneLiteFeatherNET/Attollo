@@ -78,7 +78,7 @@ changelog {
 hangarPublish {
     if (System.getenv().containsKey("CI")) {
         publications.register("Attollo") {
-            val finalVersion = if (System.getenv("GITHUB_REF_NAME").equals("main")) {
+            val finalVersion = if (System.getenv("GITHUB_REF_NAME") in listOf("main", "master")) {
                 "$baseVersion-RELEASE"
             } else {
                 baseVersion + "-SNAPSHOT+" + System.getenv("SHA_SHORT")
@@ -93,7 +93,7 @@ hangarPublish {
             platforms {
                 register(Platforms.PAPER) {
                     jar.set(tasks.shadowJar.flatMap { it.archiveFile })
-                    platformVersions.set(listOf("1.16.5","1.17","1.18","1.19"))
+                    platformVersions.set(listOf("1.16.5","1.17","1.17.1","1.18","1.18.1","1.18.2","1.19", "1.19.1", "1.19.2", "1.19.3"))
                 }
             }
         }
@@ -103,7 +103,7 @@ if (System.getenv().containsKey("CI")) {
     modrinth {
         token.set(System.getenv("MODRINTH_TOKEN"))
         projectId.set("ULt9SvKn")
-        val finalVersion = if (System.getenv("GITHUB_REF_NAME").equals("main")) {
+        val finalVersion = if (System.getenv("GITHUB_REF_NAME") in listOf("main", "master")) {
             "$baseVersion-RELEASE"
         } else {
             baseVersion + "-SNAPSHOT+" + System.getenv("SHA_SHORT")

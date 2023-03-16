@@ -18,7 +18,7 @@ Modrinth: https://modrinth.com/plugin/attollo
 Discord: https://discord.onelitefeather.de
 
 ## Permissions
-- attollo.use - Allows the player to use the elevator
+- `attollo.use` - Allows the player to use the elevator
 
 ## Configuration
 ```yaml

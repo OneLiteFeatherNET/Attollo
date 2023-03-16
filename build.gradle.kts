@@ -1,5 +1,6 @@
 import io.papermc.hangarpublishplugin.model.Platforms
 import net.minecrell.pluginyml.bukkit.BukkitPluginDescription.Permission.Default
+
 plugins {
     kotlin("jvm") version "1.8.10"
     id("com.github.johnrengelman.shadow") version "7.1.2"
@@ -78,11 +79,14 @@ changelog {
 hangarPublish {
     if (System.getenv().containsKey("CI")) {
         publications.register("Attollo") {
-            val finalVersion = if (System.getenv("GITHUB_REF_NAME") in listOf("main", "master")) {
-                "$baseVersion-RELEASE"
-            } else {
-                baseVersion + "-SNAPSHOT+" + System.getenv("SHA_SHORT")
-            }
+            val finalVersion =
+                if (System.getenv("GITHUB_REF_NAME") in listOf("main", "master") || System.getenv("GITHUB_REF_NAME")
+                        .startsWith("v")
+                ) {
+                    "$baseVersion-RELEASE"
+                } else {
+                    baseVersion + "-SNAPSHOT+" + System.getenv("SHA_SHORT")
+                }
             version.set(finalVersion)
             channel.set(System.getenv("HANGAR_CHANNEL"))
             changelog.set(project.changelog.renderItem(project.changelog.get(baseVersion)))
@@ -93,7 +97,20 @@ hangarPublish {
             platforms {
                 register(Platforms.PAPER) {
                     jar.set(tasks.shadowJar.flatMap { it.archiveFile })
-                    platformVersions.set(listOf("1.16.5","1.17","1.17.1","1.18","1.18.1","1.18.2","1.19", "1.19.1", "1.19.2", "1.19.3"))
+                    platformVersions.set(
+                        listOf(
+                            "1.16.5",
+                            "1.17",
+                            "1.17.1",
+                            "1.18",
+                            "1.18.1",
+                            "1.18.2",
+                            "1.19",
+                            "1.19.1",
+                            "1.19.2",
+                            "1.19.3"
+                        )
+                    )
                 }
             }
         }
@@ -103,15 +120,32 @@ if (System.getenv().containsKey("CI")) {
     modrinth {
         token.set(System.getenv("MODRINTH_TOKEN"))
         projectId.set("ULt9SvKn")
-        val finalVersion = if (System.getenv("GITHUB_REF_NAME") in listOf("main", "master")) {
-            "$baseVersion-RELEASE"
-        } else {
-            baseVersion + "-SNAPSHOT+" + System.getenv("SHA_SHORT")
-        }
+        val finalVersion =
+            if (System.getenv("GITHUB_REF_NAME") in listOf("main", "master") || System.getenv("GITHUB_REF_NAME")
+                    .startsWith("v")
+            ) {
+                "$baseVersion-RELEASE"
+            } else {
+                baseVersion + "-SNAPSHOT+" + System.getenv("SHA_SHORT")
+            }
         versionNumber.set(finalVersion)
         versionType.set(System.getenv("MODRINTH_CHANNEL"))
         uploadFile.set(tasks.shadowJar as Any)
-        gameVersions.addAll(listOf("1.16.5","1.17","1.17.1","1.18","1.18.1","1.18.2","1.19", "1.19.1", "1.19.2", "1.19.3","1.19.4"))
+        gameVersions.addAll(
+            listOf(
+                "1.16.5",
+                "1.17",
+                "1.17.1",
+                "1.18",
+                "1.18.1",
+                "1.18.2",
+                "1.19",
+                "1.19.1",
+                "1.19.2",
+                "1.19.3",
+                "1.19.4"
+            )
+        )
         loaders.add("paper")
         loaders.add("bukkit")
         changelog.set(project.changelog.renderItem(project.changelog.get(baseVersion)))

@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 ### Added
+- Project logo/icon
 
 ### Changed
 
@@ -11,6 +12,8 @@
 ### Removed
 
 ### Fixed
+- Main class path
+- Api Version
 
 ### Security
 

@@ -31,8 +31,8 @@ kotlin {
 }
 
 bukkit {
-    main = "com.github.themeinerlp.attollo.Attollo"
-    apiVersion = "1.16.5"
+    main = "dev.themeinerlp.attollo.Attollo"
+    apiVersion = "1.16"
     authors = listOf("TheMeinerLP")
 
     permissions {

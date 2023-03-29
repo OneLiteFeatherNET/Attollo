@@ -4,6 +4,7 @@
 
 ### Added
 - Project logo/icon
+- Renovate
 
 ### Changed
 

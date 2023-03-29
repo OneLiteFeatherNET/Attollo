@@ -14,6 +14,16 @@
 
 ### Security
 
+## 1.0.1 - 2023-03-29
+
+### Added
+- Project logo/icon
+- Renovate
+
+### Fixed
+- Main class path
+- Api Version
+
 ## 1.0.0 - 2023-03-16
 
 ### Added

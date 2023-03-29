@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "dev.themeinerlp"
-val baseVersion = "1.0.0"
+val baseVersion = "1.0.1"
 val minecraftVersion = "1.16.5"
 
 repositories {
@@ -32,8 +32,8 @@ kotlin {
 }
 
 bukkit {
-    main = "com.github.themeinerlp.attollo.Attollo"
-    apiVersion = "1.16.5"
+    main = "dev.themeinerlp.attollo.Attollo"
+    apiVersion = "1.16"
     authors = listOf("TheMeinerLP")
 
     permissions {
@@ -57,11 +57,14 @@ tasks {
 }
 
 version = if (System.getenv().containsKey("CI")) {
-    val finalVersion = if (System.getenv("GITHUB_REF_NAME").equals("main")) {
-        "$baseVersion-RELEASE"
-    } else {
-        baseVersion + "-SNAPSHOT+" + System.getenv("SHA_SHORT")
-    }
+    val finalVersion =
+        if (System.getenv("GITHUB_REF_NAME") in listOf("main", "master") || System.getenv("GITHUB_REF_NAME")
+                .startsWith("v")
+        ) {
+            baseVersion
+        } else {
+            baseVersion + "-SNAPSHOT+" + System.getenv("SHA_SHORT")
+        }
     finalVersion
 } else {
     baseVersion
@@ -97,20 +100,7 @@ hangarPublish {
             platforms {
                 register(Platforms.PAPER) {
                     jar.set(tasks.shadowJar.flatMap { it.archiveFile })
-                    platformVersions.set(
-                        listOf(
-                            "1.16.5",
-                            "1.17",
-                            "1.17.1",
-                            "1.18",
-                            "1.18.1",
-                            "1.18.2",
-                            "1.19",
-                            "1.19.1",
-                            "1.19.2",
-                            "1.19.3"
-                        )
-                    )
+                    platformVersions.set(listOf("1.16.5","1.17","1.17.1","1.18","1.18.1","1.18.2","1.19", "1.19.1", "1.19.2", "1.19.3","1.19.4"))
                 }
             }
         }

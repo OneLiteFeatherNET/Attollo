@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "dev.themeinerlp"
-val baseVersion = "1.0.0"
+val baseVersion = "1.0.1"
 val minecraftVersion = "1.16.5"
 
 repositories {

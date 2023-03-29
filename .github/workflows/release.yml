@@ -20,7 +20,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
       - name: Publish to hangar
-        run: gradle publishSolarSystemPublicationToHangar
+        run: gradle publishAllPublicationsToHangar
         env:
           HANGAR_SECRET: ${{secrets.HANGAR_KEY}}
           HANGAR_CHANNEL: "Release"

@@ -1,10 +1,11 @@
 import io.papermc.hangarpublishplugin.model.Platforms
 import net.minecrell.pluginyml.bukkit.BukkitPluginDescription.Permission.Default
+
 plugins {
     kotlin("jvm") version "1.8.10"
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("xyz.jpenilla.run-paper") version "2.0.1"
-    id("net.minecrell.plugin-yml.bukkit") version "0.5.2"
+    id("net.minecrell.plugin-yml.bukkit") version "0.5.3"
     id("io.papermc.hangar-publish-plugin") version "0.0.3"
     id("com.modrinth.minotaur") version "2.+"
     id("org.jetbrains.changelog") version "2.0.0"
@@ -120,7 +121,21 @@ if (System.getenv().containsKey("CI")) {
         versionNumber.set(finalVersion)
         versionType.set(System.getenv("MODRINTH_CHANNEL"))
         uploadFile.set(tasks.shadowJar as Any)
-        gameVersions.addAll(listOf("1.16.5","1.17","1.17.1","1.18","1.18.1","1.18.2","1.19", "1.19.1", "1.19.2", "1.19.3","1.19.4"))
+        gameVersions.addAll(
+            listOf(
+                "1.16.5",
+                "1.17",
+                "1.17.1",
+                "1.18",
+                "1.18.1",
+                "1.18.2",
+                "1.19",
+                "1.19.1",
+                "1.19.2",
+                "1.19.3",
+                "1.19.4"
+            )
+        )
         loaders.add("paper")
         loaders.add("bukkit")
         changelog.set(project.changelog.renderItem(project.changelog.get(baseVersion)))

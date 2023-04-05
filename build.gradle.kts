@@ -1,10 +1,11 @@
 import io.papermc.hangarpublishplugin.model.Platforms
 import net.minecrell.pluginyml.bukkit.BukkitPluginDescription.Permission.Default
+import xyz.jpenilla.runpaper.task.RunServer
 
 plugins {
     kotlin("jvm") version "1.8.10"
     id("com.github.johnrengelman.shadow") version "7.1.2"
-    id("xyz.jpenilla.run-paper") version "2.0.1"
+    id("xyz.jpenilla.run-paper") version "2.0.2-SNAPSHOT"
     id("net.minecrell.plugin-yml.bukkit") version "0.5.3"
     id("io.papermc.hangar-publish-plugin") version "0.0.3"
     id("com.modrinth.minotaur") version "2.+"
@@ -14,7 +15,20 @@ plugins {
 
 group = "dev.themeinerlp"
 val baseVersion = "1.0.1"
-val minecraftVersion = "1.16.5"
+val minecraftVersion = "1.19.4"
+val supportedMinecraftVersions = listOf(
+    "1.16.5",
+    "1.17",
+    "1.17.1",
+    "1.18",
+    "1.18.1",
+    "1.18.2",
+    "1.19",
+    "1.19.1",
+    "1.19.2",
+    "1.19.3",
+    "1.19.4"
+)
 
 repositories {
     mavenCentral()
@@ -22,7 +36,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("com.destroystokyo.paper:paper-api:$minecraftVersion-R0.1-SNAPSHOT")
+    compileOnly("dev.folia:folia-api:$minecraftVersion-R0.1-SNAPSHOT")
 }
 
 kotlin {
@@ -51,8 +65,25 @@ tasks {
             jvmTarget = "17"
         }
     }
-    runServer {
+    supportedMinecraftVersions.forEach {
+        register<RunServer>("run-$it") {
+            minecraftVersion(it)
+            jvmArgs("-DPaper.IgnoreJavaVersion=true", "-Dcom.mojang.eula.agree=true")
+            group = "run paper"
+            runDirectory.set(file("run-$it"))
+        }
+    }
+    register<RunServer>("runFolia") {
+        downloadsApiService.set(xyz.jpenilla.runtask.service.DownloadsAPIService.folia(project))
         minecraftVersion(minecraftVersion)
+        group = "run paper"
+        runDirectory.set(file("run-folia"))
+        jvmArgs("-DPaper.IgnoreJavaVersion=true", "-Dcom.mojang.eula.agree=true")
+    }
+    generateBukkitPluginDescription {
+        doLast {
+            outputDirectory.file(fileName).get().asFile.appendText("folia-supported: true")
+        }
     }
 }
 
@@ -100,7 +131,7 @@ hangarPublish {
             platforms {
                 register(Platforms.PAPER) {
                     jar.set(tasks.shadowJar.flatMap { it.archiveFile })
-                    platformVersions.set(listOf("1.16.5","1.17","1.17.1","1.18","1.18.1","1.18.2","1.19", "1.19.1", "1.19.2", "1.19.3","1.19.4"))
+                    platformVersions.set(supportedMinecraftVersions)
                 }
             }
         }
@@ -121,23 +152,10 @@ if (System.getenv().containsKey("CI")) {
         versionNumber.set(finalVersion)
         versionType.set(System.getenv("MODRINTH_CHANNEL"))
         uploadFile.set(tasks.shadowJar as Any)
-        gameVersions.addAll(
-            listOf(
-                "1.16.5",
-                "1.17",
-                "1.17.1",
-                "1.18",
-                "1.18.1",
-                "1.18.2",
-                "1.19",
-                "1.19.1",
-                "1.19.2",
-                "1.19.3",
-                "1.19.4"
-            )
-        )
+        gameVersions.addAll(supportedMinecraftVersions)
         loaders.add("paper")
         loaders.add("bukkit")
+        loaders.add("folia")
         changelog.set(project.changelog.renderItem(project.changelog.get(baseVersion)))
         dependencies { // A special DSL for creating dependencies
         }

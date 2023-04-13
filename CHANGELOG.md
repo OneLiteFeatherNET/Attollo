@@ -3,8 +3,10 @@
 ## [Unreleased]
 
 ### Added
+- Folia Support
 
 ### Changed
+- Improved build config
 
 ### Deprecated
 

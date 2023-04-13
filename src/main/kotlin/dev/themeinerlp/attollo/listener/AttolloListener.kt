@@ -42,11 +42,11 @@ class AttolloListener(private val attollo: Attollo) : Listener {
             ((blockLocation.blockY + 1)..height).map {
                 world.getBlockAt(blockLocation.blockX, it, blockLocation.blockZ)
             }
-                .first { it.type == attollo.elevatorBlock }.location
+                .firstOrNull() { it.type == attollo.elevatorBlock }?.location ?: return
         } else {
             ((blockLocation.blockY - 1) downTo depth).map {
                 world.getBlockAt(blockLocation.blockX, it, blockLocation.blockZ)
-            }.first { it.type == attollo.elevatorBlock }.location
+            }.firstOrNull() { it.type == attollo.elevatorBlock }?.location ?: return
         }
         found.yaw = location.yaw
         found.pitch = location.pitch

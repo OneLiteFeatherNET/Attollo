@@ -65,6 +65,11 @@ kotlin {
     jvmToolchain {
         languageVersion.set(JavaLanguageVersion.of(17))
     }
+    sourceSets.all {
+        languageSettings {
+            languageVersion = "2.0"
+        }
+    }
 }
 
 bukkit {
@@ -83,7 +88,6 @@ bukkit {
 tasks {
     compileKotlin {
         kotlinOptions {
-            useK2 = true
             jvmTarget = "17"
         }
     }

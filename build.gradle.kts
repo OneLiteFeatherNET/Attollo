@@ -59,7 +59,11 @@ repositories {
 }
 
 dependencies {
-    compileOnly("dev.folia:folia-api:$minecraftVersion-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:$minecraftVersion-R0.1-SNAPSHOT")
+    testImplementation(kotlin("test"))
+    testImplementation("io.papermc.paper:paper-api:$minecraftVersion-R0.1-SNAPSHOT")
+    testImplementation("com.github.seeseemelk:MockBukkit-v1.19:3.1.0")
+    testImplementation("io.mockk:mockk:1.13.4")
 }
 
 kotlin {
@@ -90,6 +94,12 @@ tasks {
     compileKotlin {
         kotlinOptions {
             jvmTarget = "17"
+        }
+    }
+    test {
+        useJUnitPlatform()
+        testLogging {
+            events("passed", "skipped", "failed")
         }
     }
     supportedMinecraftVersions.forEach { serverVersion ->

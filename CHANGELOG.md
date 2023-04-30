@@ -7,7 +7,6 @@
 - Drafter action
 - Pr build feedback
 - Renovate
-- 
 
 ### Changed
 - Improved build config

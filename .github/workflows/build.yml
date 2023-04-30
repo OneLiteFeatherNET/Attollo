@@ -38,7 +38,7 @@ jobs:
       - name: Archive Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: FastAsyncWorldEdit-Bukkit-SNAPSHOT
+          name: Attollo Archive
           path: build/libs/Attollo-*.jar
       - name: Publish to hangar
         if: ${{ runner.os == 'Linux' && env.STATUS == 'release' && github.event_name == 'push' && github.ref == 'refs/heads/master'}}

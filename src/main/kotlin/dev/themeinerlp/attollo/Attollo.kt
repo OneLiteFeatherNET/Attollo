@@ -4,7 +4,8 @@ import dev.themeinerlp.attollo.listener.AttolloListener
 import org.bukkit.Material
 import org.bukkit.plugin.java.JavaPlugin
 
-class Attollo : JavaPlugin() {
+open class Attollo : JavaPlugin() {
+
 
     lateinit var elevatorBlock: Material
     override fun onLoad() {

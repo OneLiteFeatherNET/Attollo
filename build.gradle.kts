@@ -14,7 +14,8 @@ plugins {
     id("org.jetbrains.changelog") version "2.0.0"
 }
 if (!File("$rootDir/.git").exists()) {
-    logger.lifecycle("""
+    logger.lifecycle(
+        """
     **************************************************************************************
     You need to fork and clone this repository! Don't download a .zip file.
     If you need assistance, consult the GitHub docs: https://docs.github.com/get-started/quickstart/fork-a-repo
@@ -32,7 +33,7 @@ ext {
         dir = File("$rootDir/.git")
     }
     val revision = git.head().abbreviatedId
-    extension = "%s+%s".format(Locale.ROOT,snapshot,revision)
+    extension = "%s+%s".format(Locale.ROOT, snapshot, revision)
 }
 
 version = "%s%s".format(Locale.ROOT, baseVersion, extension)
@@ -125,9 +126,13 @@ changelog {
 
 hangarPublish {
     publications.register("Attollo") {
-        version.set(version)
+        version.set(project.version.toString())
         channel.set(System.getenv("HANGAR_CHANNEL"))
-        changelog.set(project.changelog.renderItem(project.changelog.getOrNull(baseVersion) ?: project.changelog.getUnreleased()))
+        changelog.set(
+            project.changelog.renderItem(
+                project.changelog.getOrNull(baseVersion) ?: project.changelog.getUnreleased()
+            )
+        )
         apiKey.set(System.getenv("HANGAR_SECRET"))
         owner.set("OneLiteFeather")
         slug.set("Attollo")
@@ -150,7 +155,9 @@ modrinth {
     loaders.add("paper")
     loaders.add("bukkit")
     loaders.add("folia")
-    changelog.set(project.changelog.renderItem(project.changelog.getOrNull(baseVersion) ?: project.changelog.getUnreleased()))
-    dependencies { // A special DSL for creating dependencies
-    }
+    changelog.set(
+        project.changelog.renderItem(
+            project.changelog.getOrNull(baseVersion) ?: project.changelog.getUnreleased()
+        )
+    )
 }

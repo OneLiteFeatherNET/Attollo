@@ -4,10 +4,14 @@
 
 ### Added
 - Folia Support
+- Drafter action
+- Pr build feedback
+- Renovate
+- 
 
 ### Changed
 - Improved build config
-
+- New release cycle system
 ### Deprecated
 
 ### Removed

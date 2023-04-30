@@ -1,20 +1,56 @@
 import io.papermc.hangarpublishplugin.model.Platforms
 import net.minecrell.pluginyml.bukkit.BukkitPluginDescription.Permission.Default
+import org.ajoberstar.grgit.Grgit
+import xyz.jpenilla.runpaper.task.RunServer
+import java.util.*
 
 plugins {
-    kotlin("jvm") version "1.8.10"
+    kotlin("jvm") version "1.8.21"
     id("com.github.johnrengelman.shadow") version "7.1.2"
-    id("xyz.jpenilla.run-paper") version "2.0.1"
+    id("xyz.jpenilla.run-paper") version "2.1.0"
     id("net.minecrell.plugin-yml.bukkit") version "0.5.3"
-    id("io.papermc.hangar-publish-plugin") version "0.0.3"
+    id("io.papermc.hangar-publish-plugin") version "0.0.5"
     id("com.modrinth.minotaur") version "2.+"
     id("org.jetbrains.changelog") version "2.0.0"
-
+}
+if (!File("$rootDir/.git").exists()) {
+    logger.lifecycle("""
+    **************************************************************************************
+    You need to fork and clone this repository! Don't download a .zip file.
+    If you need assistance, consult the GitHub docs: https://docs.github.com/get-started/quickstart/fork-a-repo
+    **************************************************************************************
+    """.trimIndent()
+    ).also { System.exit(1) }
 }
 
 group = "dev.themeinerlp"
-val baseVersion = "1.0.1"
-val minecraftVersion = "1.16.5"
+var baseVersion by extra("1.0.2")
+var extension by extra("")
+var snapshot by extra("-SNAPSHOT")
+ext {
+    val git: Grgit = Grgit.open {
+        dir = File("$rootDir/.git")
+    }
+    val revision = git.head().abbreviatedId
+    extension = "%s+%s".format(Locale.ROOT,snapshot,revision)
+}
+
+version = "%s%s".format(Locale.ROOT, baseVersion, extension)
+
+val minecraftVersion = "1.19.4"
+val supportedMinecraftVersions = listOf(
+    "1.16.5",
+    "1.17",
+    "1.17.1",
+    "1.18",
+    "1.18.1",
+    "1.18.2",
+    "1.19",
+    "1.19.1",
+    "1.19.2",
+    "1.19.3",
+    "1.19.4"
+)
 
 repositories {
     mavenCentral()
@@ -22,7 +58,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("com.destroystokyo.paper:paper-api:$minecraftVersion-R0.1-SNAPSHOT")
+    compileOnly("dev.folia:folia-api:$minecraftVersion-R0.1-SNAPSHOT")
 }
 
 kotlin {
@@ -51,23 +87,27 @@ tasks {
             jvmTarget = "17"
         }
     }
-    runServer {
-        minecraftVersion(minecraftVersion)
-    }
-}
-
-version = if (System.getenv().containsKey("CI")) {
-    val finalVersion =
-        if (System.getenv("GITHUB_REF_NAME") in listOf("main", "master") || System.getenv("GITHUB_REF_NAME")
-                .startsWith("v")
-        ) {
-            baseVersion
-        } else {
-            baseVersion + "-SNAPSHOT+" + System.getenv("SHA_SHORT")
+    supportedMinecraftVersions.forEach { serverVersion ->
+        register<RunServer>("run-$serverVersion") {
+            minecraftVersion(serverVersion)
+            jvmArgs("-DPaper.IgnoreJavaVersion=true", "-Dcom.mojang.eula.agree=true")
+            group = "run paper"
+            runDirectory.set(file("run-$serverVersion"))
+            pluginJars(rootProject.tasks.shadowJar.map { it.archiveFile }.get())
         }
-    finalVersion
-} else {
-    baseVersion
+    }
+    register<RunServer>("runFolia") {
+        downloadsApiService.set(xyz.jpenilla.runtask.service.DownloadsAPIService.folia(project))
+        minecraftVersion(minecraftVersion)
+        group = "run paper"
+        runDirectory.set(file("run-folia"))
+        jvmArgs("-DPaper.IgnoreJavaVersion=true", "-Dcom.mojang.eula.agree=true")
+    }
+    generateBukkitPluginDescription {
+        doLast {
+            outputDirectory.file(fileName).get().asFile.appendText("folia-supported: true")
+        }
+    }
 }
 
 changelog {
@@ -80,66 +120,33 @@ changelog {
 }
 
 hangarPublish {
-    if (System.getenv().containsKey("CI")) {
-        publications.register("Attollo") {
-            val finalVersion =
-                if (System.getenv("GITHUB_REF_NAME") in listOf("main", "master") || System.getenv("GITHUB_REF_NAME")
-                        .startsWith("v")
-                ) {
-                    "$baseVersion-RELEASE"
-                } else {
-                    baseVersion + "-SNAPSHOT+" + System.getenv("SHA_SHORT")
-                }
-            version.set(finalVersion)
-            channel.set(System.getenv("HANGAR_CHANNEL"))
-            changelog.set(project.changelog.renderItem(project.changelog.get(baseVersion)))
-            apiKey.set(System.getenv("HANGAR_SECRET"))
-            owner.set("OneLiteFeather")
-            slug.set("Attollo")
+    publications.register("Attollo") {
+        version.set(version)
+        channel.set(System.getenv("HANGAR_CHANNEL"))
+        changelog.set(project.changelog.renderItem(project.changelog.getOrNull(baseVersion) ?: project.changelog.getUnreleased()))
+        apiKey.set(System.getenv("HANGAR_SECRET"))
+        owner.set("OneLiteFeather")
+        slug.set("Attollo")
 
-            platforms {
-                register(Platforms.PAPER) {
-                    jar.set(tasks.shadowJar.flatMap { it.archiveFile })
-                    platformVersions.set(listOf("1.16.5","1.17","1.17.1","1.18","1.18.1","1.18.2","1.19", "1.19.1", "1.19.2", "1.19.3","1.19.4"))
-                }
+        platforms {
+            register(Platforms.PAPER) {
+                jar.set(tasks.shadowJar.flatMap { it.archiveFile })
+                platformVersions.set(supportedMinecraftVersions)
             }
         }
     }
 }
-if (System.getenv().containsKey("CI")) {
-    modrinth {
-        token.set(System.getenv("MODRINTH_TOKEN"))
-        projectId.set("ULt9SvKn")
-        val finalVersion =
-            if (System.getenv("GITHUB_REF_NAME") in listOf("main", "master") || System.getenv("GITHUB_REF_NAME")
-                    .startsWith("v")
-            ) {
-                "$baseVersion-RELEASE"
-            } else {
-                baseVersion + "-SNAPSHOT+" + System.getenv("SHA_SHORT")
-            }
-        versionNumber.set(finalVersion)
-        versionType.set(System.getenv("MODRINTH_CHANNEL"))
-        uploadFile.set(tasks.shadowJar as Any)
-        gameVersions.addAll(
-            listOf(
-                "1.16.5",
-                "1.17",
-                "1.17.1",
-                "1.18",
-                "1.18.1",
-                "1.18.2",
-                "1.19",
-                "1.19.1",
-                "1.19.2",
-                "1.19.3",
-                "1.19.4"
-            )
-        )
-        loaders.add("paper")
-        loaders.add("bukkit")
-        changelog.set(project.changelog.renderItem(project.changelog.get(baseVersion)))
-        dependencies { // A special DSL for creating dependencies
-        }
+modrinth {
+    token.set(System.getenv("MODRINTH_TOKEN"))
+    projectId.set("ULt9SvKn")
+    versionNumber.set(version.toString())
+    versionType.set(System.getenv("MODRINTH_CHANNEL"))
+    uploadFile.set(tasks.shadowJar as Any)
+    gameVersions.addAll(supportedMinecraftVersions)
+    loaders.add("paper")
+    loaders.add("bukkit")
+    loaders.add("folia")
+    changelog.set(project.changelog.renderItem(project.changelog.getOrNull(baseVersion) ?: project.changelog.getUnreleased()))
+    dependencies { // A special DSL for creating dependencies
     }
 }

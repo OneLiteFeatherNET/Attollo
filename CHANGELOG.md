@@ -7,6 +7,7 @@
 - Drafter action
 - Pr build feedback
 - Renovate
+- Basic Unit testing
 
 ### Changed
 - Improved build config

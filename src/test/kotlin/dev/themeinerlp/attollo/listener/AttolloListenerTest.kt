@@ -139,7 +139,6 @@ class AttolloListenerTest {
         }
     }
 
-    @Ignore
     @Test
     fun `test down with permissions but right block type`() {
 
@@ -153,7 +152,7 @@ class AttolloListenerTest {
                 every { type } returns Material.DAYLIGHT_DETECTOR
             }
         }
-        every { fakeWorld.getBlockAt(any(), 50, any()) } returns mockk {
+        every { fakeWorld.getBlockAt(any(), 25, any()) } returns mockk {
             every { type } returns Material.DAYLIGHT_DETECTOR
             every { location } returns dayLightBlockLocation
         }

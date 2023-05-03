@@ -60,6 +60,10 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:$minecraftVersion-R0.1-SNAPSHOT")
+    implementation("dev.themeinerlp:plugin-debug:1.1.0")
+    implementation("dev.themeinerlp.plugin-debug:bukkit-extension:1.1.0")
+    implementation("net.kyori:adventure-text-minimessage:4.13.1")
+
 
     // testing
     testImplementation(kotlin("test"))
@@ -88,6 +92,11 @@ bukkit {
         register("attollo.use") {
             description = "Allows the player to use the plugin"
             default = Default.TRUE
+        }
+    }
+    commands {
+        register("attollo") {
+            permission = "attollo.command.attollo"
         }
     }
 }

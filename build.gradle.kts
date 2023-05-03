@@ -27,7 +27,7 @@ if (!File("$rootDir/.git").exists()) {
 group = "dev.themeinerlp"
 var baseVersion by extra("1.1.0")
 var extension by extra("")
-var snapshot by extra("-SNAPSHOT")
+var snapshot by extra("")
 ext {
     val git: Grgit = Grgit.open {
         dir = File("$rootDir/.git")

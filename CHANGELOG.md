@@ -3,15 +3,9 @@
 ## [Unreleased]
 
 ### Added
-- Folia Support
-- Drafter action
-- Pr build feedback
-- Renovate
-- Basic Unit testing
 
 ### Changed
-- Improved build config
-- New release cycle system
+
 ### Deprecated
 
 ### Removed
@@ -19,6 +13,20 @@
 ### Fixed
 
 ### Security
+
+## 1.1.0 - 2023-05-03
+
+### Added
+- Folia Support
+- Drafter action
+- Pr build feedback
+- Renovate
+- Basic Unit testing
+- Debug Paste Command
+
+### Changed
+- Improved build config
+- New release cycle system
 
 ## 1.0.1 - 2023-03-29
 

@@ -4,6 +4,14 @@ labels: [ "status: needs triage", "type: bug" ]
 body:
   - type: textarea
     attributes:
+      label: Debug Paste
+      description: |
+        Use in the console `attollo debugpaste` and post the link here.
+        The debug paste gets deleted after 90 days
+    validations:
+      required: true
+  - type: textarea
+    attributes:
       label: Expected behavior
       description: What you expected to see.
     validations:

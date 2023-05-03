@@ -1,6 +1,5 @@
 package dev.themeinerlp.attollo.commands
 
-import com.google.gson.JsonObject
 import dev.themeinerlp.attollo.Attollo
 import dev.themeinerlp.attollo.BYTEBIN_BASE_URL
 import dev.themeinerlp.plugindebug.BukkitDebugBuilder

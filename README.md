@@ -15,7 +15,7 @@ Hangar: https://hangar.papermc.io/OneLiteFeather/Attollo
 
 Modrinth: https://modrinth.com/plugin/attollo
 
-Discord: https://discord.onelitefeather.de
+Discord: https://discord.onelitefeather.net
 
 ## Permissions
 - `attollo.use` - Allows the player to use the elevator

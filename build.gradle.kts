@@ -25,7 +25,7 @@ if (!File("$rootDir/.git").exists()) {
 }
 
 group = "dev.themeinerlp"
-var baseVersion by extra("1.1.1")
+var baseVersion by extra("1.2.0")
 var extension by extra("")
 var snapshot by extra("-SNAPSHOT")
 ext {
@@ -38,7 +38,7 @@ ext {
 
 version = "%s%s".format(Locale.ROOT, baseVersion, extension)
 
-val minecraftVersion = "1.19.4"
+val minecraftVersion = "1.20.1"
 val supportedMinecraftVersions = listOf(
     "1.16.5",
     "1.17",
@@ -50,7 +50,9 @@ val supportedMinecraftVersions = listOf(
     "1.19.1",
     "1.19.2",
     "1.19.3",
-    "1.19.4"
+    "1.19.4",
+    "1.20",
+    "1.20.1",
 )
 
 repositories {

@@ -9,7 +9,7 @@ repositories {
 }
 dependencies {
     implementation(gradleApi())
-    implementation("org.ajoberstar.grgit:grgit-gradle:5.2.0")
+    implementation("org.ajoberstar.grgit:grgit-gradle:5.2.1")
 }
 
 kotlin {

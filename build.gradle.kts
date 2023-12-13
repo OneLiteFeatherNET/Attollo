@@ -149,16 +149,15 @@ changelog {
 
 hangarPublish {
     publications.register("Attollo") {
-        version.set(project.version.toString())
-        channel.set(System.getenv("HANGAR_CHANNEL"))
-        changelog.set(
+        version = project.version as String
+        id = "Attollo"
+        channel = "HANGAR_CHANNEL"
+        changelog =
             project.changelog.renderItem(
                 project.changelog.getOrNull(baseVersion) ?: project.changelog.getUnreleased()
             )
-        )
-        apiKey.set(System.getenv("HANGAR_SECRET"))
-        owner.set("OneLiteFeather")
-        slug.set("Attollo")
+
+        apiKey = System.getenv("HANGAR_SECRET")
 
         platforms {
             register(Platforms.PAPER) {

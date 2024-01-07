@@ -9,7 +9,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("xyz.jpenilla.run-paper") version "2.2.2"
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
-    id("io.papermc.hangar-publish-plugin") version "0.0.5"
+    id("io.papermc.hangar-publish-plugin") version "0.1.1"
     id("com.modrinth.minotaur") version "2.+"
     id("org.jetbrains.changelog") version "2.2.0"
 }
@@ -149,16 +149,15 @@ changelog {
 
 hangarPublish {
     publications.register("Attollo") {
-        version.set(project.version.toString())
-        channel.set(System.getenv("HANGAR_CHANNEL"))
-        changelog.set(
+        version = project.version as String
+        id = "Attollo"
+        channel = "HANGAR_CHANNEL"
+        changelog =
             project.changelog.renderItem(
                 project.changelog.getOrNull(baseVersion) ?: project.changelog.getUnreleased()
             )
-        )
-        apiKey.set(System.getenv("HANGAR_SECRET"))
-        owner.set("OneLiteFeather")
-        slug.set("Attollo")
+
+        apiKey = System.getenv("HANGAR_SECRET")
 
         platforms {
             register(Platforms.PAPER) {

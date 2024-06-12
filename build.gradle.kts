@@ -64,7 +64,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:$minecraftVersion-R0.1-SNAPSHOT")
     implementation("dev.themeinerlp:plugin-debug:1.1.0")
     implementation("dev.themeinerlp.plugin-debug:bukkit-extension:1.1.0")
-    implementation("net.kyori:adventure-text-minimessage:4.16.0")
+    implementation("net.kyori:adventure-text-minimessage:4.17.0")
 
 
     // testing

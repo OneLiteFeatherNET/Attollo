@@ -9,7 +9,7 @@ jobs:
       - name: Send custom message with args
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-          DISCORD_USERNAME: PlotSquared Release
+          DISCORD_USERNAME: Attollo Release
           DISCORD_AVATAR: https://raw.githubusercontent.com/OneLiteFeatherNET/Attollo/master/.github/assets/Atollo.png
         uses: Ilshidur/action-discord@0.3.2
         with:

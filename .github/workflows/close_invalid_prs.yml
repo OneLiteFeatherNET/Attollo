@@ -1,4 +1,4 @@
-name: Close invalid PRs
+name: Close invalid Pull Requests
 
 on:
   pull_request_target:

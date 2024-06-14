@@ -1,0 +1,25 @@
+name: Announce release on discord
+on:
+  release:
+    types: [ published ]
+jobs:
+  send_announcement:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send custom message with args
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_USERNAME: Attollo Release
+          DISCORD_AVATAR: https://raw.githubusercontent.com/OneLiteFeatherNET/Attollo/master/.github/assets/Atollo.png
+        uses: Ilshidur/action-discord@0.3.2
+        with:
+          args: |
+            "<@&1102542159447601212>"
+            ""
+            "<:attollo:1102543562727501845> **Attollo ${{ github.event.release.tag_name }} has been released!**"
+            ""
+            "Click here to view changelog: https://github.com/OneLiteFeatherNET/Attollo/releases/tag/${{ github.event.release.tag_name }}"
+            ""
+            "The download is available at:"
+            "- Hangar: <https://hangar.papermc.io/OneLiteFeather/Attollo/versions/${{ github.event.release.tag_name }}/>"
+            "- Modrinth: <https://modrinth.com/plugin/attollo/version/${{ github.event.release.tag_name }}/>"

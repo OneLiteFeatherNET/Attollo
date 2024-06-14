@@ -1,17 +1,17 @@
 import io.papermc.hangarpublishplugin.model.Platforms
 import net.minecrell.pluginyml.bukkit.BukkitPluginDescription.Permission.Default
-import org.ajoberstar.grgit.Grgit
 import xyz.jpenilla.runpaper.task.RunServer
-import java.util.*
 
 plugins {
     kotlin("jvm") version "2.0.0"
-    id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("xyz.jpenilla.run-paper") version "2.3.0"
-    id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
-    id("io.papermc.hangar-publish-plugin") version "0.1.2"
-    id("com.modrinth.minotaur") version "2.+"
-    id("org.jetbrains.changelog") version "2.2.0"
+    alias(libs.plugins.publishdata)
+    alias(libs.plugins.shadow)
+    alias(libs.plugins.paper.run)
+    alias(libs.plugins.bukkit.yml)
+    alias(libs.plugins.hangar)
+    alias(libs.plugins.modrinth)
+    id("olf.build-logic")
+    `maven-publish`
 }
 if (!File("$rootDir/.git").exists()) {
     logger.lifecycle(
@@ -24,35 +24,18 @@ if (!File("$rootDir/.git").exists()) {
     ).also { System.exit(1) }
 }
 
-group = "dev.themeinerlp"
-var baseVersion by extra("1.2.0")
-var extension by extra("")
-var snapshot by extra("-SNAPSHOT")
-ext {
-    val git: Grgit = Grgit.open {
-        dir = File("$rootDir/.git")
-    }
-    val revision = git.head().abbreviatedId
-    extension = "%s+%s".format(Locale.ROOT, snapshot, revision)
-}
+group = "net.onelitefeather"
+version = "1.3.0"
 
-version = "%s%s".format(Locale.ROOT, baseVersion, extension)
-
-val minecraftVersion = "1.20.1"
+val minecraftVersion = "1.20.6"
 val supportedMinecraftVersions = listOf(
-    "1.16.5",
-    "1.17",
-    "1.17.1",
-    "1.18",
-    "1.18.1",
-    "1.18.2",
-    "1.19",
-    "1.19.1",
-    "1.19.2",
-    "1.19.3",
-    "1.19.4",
     "1.20",
     "1.20.1",
+    "1.20.2",
+    "1.20.3",
+    "1.20.4",
+    "1.20.5",
+    "1.20.6",
 )
 
 repositories {
@@ -62,8 +45,6 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:$minecraftVersion-R0.1-SNAPSHOT")
-    implementation("dev.themeinerlp:plugin-debug:1.1.0")
-    implementation("dev.themeinerlp.plugin-debug:bukkit-extension:1.1.0")
     implementation("net.kyori:adventure-text-minimessage:4.17.0")
 
 
@@ -76,7 +57,7 @@ dependencies {
 
 kotlin {
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
     sourceSets.all {
         languageSettings {
@@ -87,8 +68,9 @@ kotlin {
 
 bukkit {
     main = "dev.themeinerlp.attollo.Attollo"
-    apiVersion = "1.16"
+    apiVersion = "1.20"
     authors = listOf("TheMeinerLP")
+    foliaSupported = true
 
     permissions {
         register("attollo.use") {
@@ -103,11 +85,21 @@ bukkit {
     }
 }
 
+publishData {
+    useEldoNexusRepos(false)
+    publishTask("shadowJar")
+}
+
+
 tasks {
-    compileKotlin {
-        kotlinOptions {
-            jvmTarget = "17"
-        }
+    named<Jar>("jar") {
+        archiveClassifier.set("unshaded")
+    }
+    named("build") {
+        dependsOn(shadowJar)
+    }
+    shadowJar {
+        archiveClassifier.set("")
     }
     test {
         useJUnitPlatform()
@@ -131,55 +123,71 @@ tasks {
         runDirectory.set(file("run-folia"))
         jvmArgs("-DPaper.IgnoreJavaVersion=true", "-Dcom.mojang.eula.agree=true")
     }
-    generateBukkitPluginDescription {
-        doLast {
-            outputDirectory.file(fileName).get().asFile.appendText("folia-supported: true")
-        }
+}
+
+val branch = rootProject.branchName()
+val baseVersion = publishData.getVersion(false)
+val isRelease = !baseVersion.contains('-')
+val isMainBranch = branch == "master"
+if (!isRelease || isMainBranch) { // Only publish releases from the main branch
+    val suffixedVersion =
+        if (isRelease) baseVersion else baseVersion + "+" + System.getenv("GITHUB_RUN_NUMBER")
+    val changelogContent = if (isRelease) {
+        "See [GitHub](https://github.com/OneLiteFeatherNET/Attollo) for release notes."
+    } else {
+        val commitHash = rootProject.latestCommitHash()
+        "[$commitHash](https://github.com/OneLiteFeatherNET/Attollo/commit/$commitHash) ${rootProject.latestCommitMessage()}"
     }
-}
+    hangarPublish {
+        publications.register("Attollo") {
+            version.set(suffixedVersion)
+            channel.set(if (isRelease) "Release" else "Snapshot")
+            changelog.set(changelogContent)
+            apiKey.set(System.getenv("HANGAR_SECRET"))
+            id.set("Attollo")
 
-changelog {
-    version.set(baseVersion)
-    path.set("${project.projectDir}/CHANGELOG.md")
-    itemPrefix.set("-")
-    keepUnreleasedSection.set(true)
-    unreleasedTerm.set("[Unreleased]")
-    groups.set(listOf("Added", "Changed", "Deprecated", "Removed", "Fixed", "Security"))
-}
-
-hangarPublish {
-    publications.register("Attollo") {
-        version = project.version as String
-        id = "Attollo"
-        channel = "HANGAR_CHANNEL"
-        changelog =
-            project.changelog.renderItem(
-                project.changelog.getOrNull(baseVersion) ?: project.changelog.getUnreleased()
-            )
-
-        apiKey = System.getenv("HANGAR_SECRET")
-
-        platforms {
-            register(Platforms.PAPER) {
-                jar.set(tasks.shadowJar.flatMap { it.archiveFile })
-                platformVersions.set(supportedMinecraftVersions)
+            platforms {
+                register(Platforms.PAPER) {
+                    jar.set(tasks.shadowJar.flatMap { it.archiveFile })
+                    platformVersions.set(supportedMinecraftVersions)
+                }
             }
         }
     }
+    modrinth {
+        token.set(System.getenv("MODRINTH_TOKEN"))
+        projectId.set("ULt9SvKn")
+        versionType.set(if (isRelease) "release" else "beta")
+        versionNumber.set(suffixedVersion)
+        versionName.set(suffixedVersion)
+        changelog.set(changelogContent)
+        changelog.set(changelogContent)
+        uploadFile.set(tasks.shadowJar.flatMap { it.archiveFile })
+        gameVersions.addAll(supportedMinecraftVersions)
+        loaders.add("paper")
+        loaders.add("bukkit")
+    }
 }
-modrinth {
-    token.set(System.getenv("MODRINTH_TOKEN"))
-    projectId.set("ULt9SvKn")
-    versionNumber.set(version.toString())
-    versionType.set(System.getenv("MODRINTH_CHANNEL"))
-    uploadFile.set(tasks.shadowJar as Any)
-    gameVersions.addAll(supportedMinecraftVersions)
-    loaders.add("paper")
-    loaders.add("bukkit")
-    loaders.add("folia")
-    changelog.set(
-        project.changelog.renderItem(
-            project.changelog.getOrNull(baseVersion) ?: project.changelog.getUnreleased()
-        )
-    )
+
+publishing {
+    publications.create<MavenPublication>("maven") {
+        // Configure our maven publication
+        publishData.configurePublication(this)
+    }
+
+    repositories {
+        // We add EldoNexus as our repository. The used url is defined by the publish data.
+        maven {
+            authentication {
+                credentials(PasswordCredentials::class) {
+                    // Those credentials need to be set under "Settings -> Secrets -> Actions" in your repository
+                    username = System.getenv("ELDO_USERNAME")
+                    password = System.getenv("ELDO_PASSWORD")
+                }
+            }
+
+            name = "EldoNexus"
+            setUrl(publishData.getRepository())
+        }
+    }
 }

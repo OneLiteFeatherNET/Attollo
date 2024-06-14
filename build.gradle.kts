@@ -97,7 +97,7 @@ bukkit {
 }
 
 publishData {
-    useEldoNexusRepos(true)
+    useEldoNexusRepos(false)
     publishTask("shadowJar")
 }
 

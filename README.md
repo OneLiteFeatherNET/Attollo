@@ -19,10 +19,6 @@ Discord: https://discord.onelitefeather.net
 
 ## Permissions
 - `attollo.use` - Allows the player to use the elevator
-- `attollo.command.attollo` - Creates a debug paste for bug tickets
-
-## Commands
-- `attollo debugpaste` - Creates a debug paste for bug tickets 
 
 ## Configuration
 ```yaml

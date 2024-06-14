@@ -98,6 +98,15 @@ publishData {
 
 
 tasks {
+    named<Jar>("jar") {
+        archiveClassifier.set("unshaded")
+    }
+    named("build") {
+        dependsOn(shadowJar)
+    }
+    shadowJar {
+        archiveClassifier.set("")
+    }
     test {
         useJUnitPlatform()
         testLogging {

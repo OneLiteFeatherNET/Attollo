@@ -8,10 +8,11 @@ jobs:
     steps:
       - name: Send custom message with args
         env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_WEBHOOK: ${{ secrets.ONELITEFATHERNET_GITHUB_WEBHOOK }}
           DISCORD_USERNAME: Attollo Release
           DISCORD_AVATAR: https://raw.githubusercontent.com/OneLiteFeatherNET/Attollo/master/.github/assets/Atollo.png
-        uses: Ilshidur/action-discord@0.3.2
+          DISCORD_THREAD_ID: '1235181365511589888'
+        uses: OneLiteFeatherNET/action-discord@master
         with:
           args: |
             "<@&1102542159447601212>"

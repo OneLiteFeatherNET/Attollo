@@ -27,7 +27,7 @@ if (!File("$rootDir/.git").exists()) {
 group = "net.onelitefeather"
 version = "1.3.0"
 
-val minecraftVersion = "1.20.4"
+val minecraftVersion = "1.20.6"
 val supportedMinecraftVersions = listOf(
     "1.16.5",
     "1.17",
@@ -42,6 +42,11 @@ val supportedMinecraftVersions = listOf(
     "1.19.4",
     "1.20",
     "1.20.1",
+    "1.20.2",
+    "1.20.3",
+    "1.20.4",
+    "1.20.5",
+    "1.20.6",
 )
 
 repositories {
@@ -63,7 +68,7 @@ dependencies {
 
 kotlin {
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
     sourceSets.all {
         languageSettings {
@@ -74,7 +79,7 @@ kotlin {
 
 bukkit {
     main = "dev.themeinerlp.attollo.Attollo"
-    apiVersion = "1.16"
+    apiVersion = "1.19"
     authors = listOf("TheMeinerLP")
     foliaSupported = true
 
@@ -132,7 +137,7 @@ tasks {
 }
 
 val branch = rootProject.branchName()
-val baseVersion = "1.0.0"// publishData.getVersion(false)
+val baseVersion = publishData.getVersion(false)
 val isRelease = !baseVersion.contains('-')
 val isMainBranch = branch == "master"
 if (!isRelease || isMainBranch) { // Only publish releases from the main branch

@@ -19,4 +19,4 @@ jobs:
           distribution: temurin
           java-version: 17
       - name: Build on ${{ matrix.os }}
-        run: ./gradlew clean build -x
+        run: ./gradlew clean build -x test

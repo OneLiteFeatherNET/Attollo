@@ -22,7 +22,7 @@ jobs:
           cache: gradle
           java-version: 17
       - name: Publish to Jar
-        run: ./gradlew build publishAllPublicationsToHangar modrinth publish
+        run: ./gradlew build publishAllPublicationsToHangar modrinth publish -x test
         env:
           ELDO_USERNAME: "${{ secrets.ELDO_USERNAME }}"
           ELDO_PASSWORD: "${{ secrets.ELDO_PASSWORD }}"

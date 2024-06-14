@@ -12,7 +12,7 @@ jobs:
           DISCORD_USERNAME: Attollo Release
           DISCORD_AVATAR: https://raw.githubusercontent.com/OneLiteFeatherNET/Attollo/master/.github/assets/Atollo.png
           DISCORD_THREAD_ID: 1235181365511589888
-        uses: OneLiteFeatherNET/action-discord@0.4.1
+        uses: OneLiteFeatherNET/action-discord@0.4.2
         with:
           args: |
             "<@&1102542159447601212>"

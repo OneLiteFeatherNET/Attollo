@@ -4,8 +4,8 @@ import xyz.jpenilla.runpaper.task.RunServer
 
 plugins {
     kotlin("jvm") version "2.0.0"
-    id("io.github.goooler.shadow") version "8.1.7"
     alias(libs.plugins.publishdata)
+    alias(libs.plugins.shadow)
     alias(libs.plugins.paper.run)
     alias(libs.plugins.bukkit.yml)
     alias(libs.plugins.hangar)

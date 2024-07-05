@@ -7,7 +7,7 @@ plugins {
     alias(libs.plugins.publishdata)
     alias(libs.plugins.shadow)
     alias(libs.plugins.paper.run)
-    alias(libs.plugins.bukkit.yml)
+    alias(libs.plugins.paper.yml)
     alias(libs.plugins.hangar)
     alias(libs.plugins.modrinth)
     id("olf.build-logic")
@@ -27,15 +27,9 @@ if (!File("$rootDir/.git").exists()) {
 group = "net.onelitefeather"
 version = "1.4.0"
 
-val minecraftVersion = "1.20.6"
 val supportedMinecraftVersions = listOf(
-    "1.20",
-    "1.20.1",
-    "1.20.2",
-    "1.20.3",
-    "1.20.4",
-    "1.20.5",
     "1.20.6",
+    "1.21"
 )
 
 repositories {
@@ -44,29 +38,23 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:$minecraftVersion-R0.1-SNAPSHOT")
-    implementation("net.kyori:adventure-text-minimessage:4.17.0")
-
+    compileOnly(libs.paper)
+    implementation(libs.adventure.minimessage)
 
     // testing
     testImplementation(kotlin("test"))
-    testImplementation("io.papermc.paper:paper-api:$minecraftVersion-R0.1-SNAPSHOT")
-    testImplementation("com.github.seeseemelk:MockBukkit-v1.19:3.1.0")
-    testImplementation("io.mockk:mockk:1.13.11")
+    testImplementation(libs.paper)
+    testImplementation(libs.mock.bukkit)
+    testImplementation(libs.mockk)
 }
 
 kotlin {
     jvmToolchain {
         languageVersion.set(JavaLanguageVersion.of(21))
     }
-    sourceSets.all {
-        languageSettings {
-            languageVersion = "2.0"
-        }
-    }
 }
 
-bukkit {
+paper {
     main = "dev.themeinerlp.attollo.Attollo"
     apiVersion = "1.20"
     authors = listOf("TheMeinerLP")
@@ -76,11 +64,6 @@ bukkit {
         register("attollo.use") {
             description = "Allows the player to use the plugin"
             default = Default.TRUE
-        }
-    }
-    commands {
-        register("attollo") {
-            permission = "attollo.command.attollo"
         }
     }
 }
@@ -115,13 +98,6 @@ tasks {
             runDirectory.set(file("run-$serverVersion"))
             pluginJars(rootProject.tasks.shadowJar.map { it.archiveFile }.get())
         }
-    }
-    register<RunServer>("runFolia") {
-        downloadsApiService.set(xyz.jpenilla.runtask.service.DownloadsAPIService.folia(project))
-        minecraftVersion(minecraftVersion)
-        group = "run paper"
-        runDirectory.set(file("run-folia"))
-        jvmArgs("-DPaper.IgnoreJavaVersion=true", "-Dcom.mojang.eula.agree=true")
     }
 }
 
@@ -165,7 +141,6 @@ if (!isRelease || isMainBranch) { // Only publish releases from the main branch
         uploadFile.set(tasks.shadowJar.flatMap { it.archiveFile })
         gameVersions.addAll(supportedMinecraftVersions)
         loaders.add("paper")
-        loaders.add("bukkit")
     }
 }
 

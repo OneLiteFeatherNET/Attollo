@@ -13,8 +13,16 @@ open class Attollo : JavaPlugin() {
     }
 
     override fun onEnable() {
-        elevatorBlock = Material.matchMaterial(config.getString("elevatorBlock") ?: "DAYLIGHT_DETECTOR")
-            ?: Material.DAYLIGHT_DETECTOR
+        val rawValue = config.getString("elevatorBlock") ?: "DAYLIGHT_DETECTOR"
+        val material = Material.matchMaterial(rawValue)
+
+        if (material == null) {
+            logger.warning("Invalid elevatorBlock material in config.yml: '$rawValue'. Defaulting to DAYLIGHT_DETECTOR.")
+        }
+
+        elevatorBlock = material ?: Material.DAYLIGHT_DETECTOR
+        logger.info("Using elevatorBlock: $elevatorBlock")
         server.pluginManager.registerEvents(AttolloListener(this), this)
     }
+
 }

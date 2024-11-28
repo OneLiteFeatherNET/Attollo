@@ -25,7 +25,7 @@ if (!File("$rootDir/.git").exists()) {
 }
 
 group = "net.onelitefeather"
-version = "1.4.0"
+version = "1.0.0"
 
 val minecraftVersion = "1.20.6"
 val supportedMinecraftVersions = listOf(
@@ -46,7 +46,7 @@ repositories {
 dependencies {
     compileOnly("io.papermc.paper:paper-api:$minecraftVersion-R0.1-SNAPSHOT")
     implementation("net.kyori:adventure-text-minimessage:4.17.0")
-
+    implementation("com.github.zafarkhaja:java-semver:0.10.2")
 
     // testing
     testImplementation(kotlin("test"))

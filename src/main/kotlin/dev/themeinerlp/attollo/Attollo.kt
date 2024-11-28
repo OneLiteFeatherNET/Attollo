@@ -2,12 +2,14 @@ package dev.themeinerlp.attollo
 
 import dev.themeinerlp.attollo.listener.AttolloListener
 import dev.themeinerlp.attollo.listener.UpdateCheckerListener
+import dev.themeinerlp.attollo.service.UpdateService
 import org.bukkit.Material
 import org.bukkit.plugin.java.JavaPlugin
 
 open class Attollo : JavaPlugin() {
 
     lateinit var elevatorBlock: Material
+    lateinit var updateService: UpdateService
 
     override fun onLoad() {
         saveDefaultConfig()
@@ -25,6 +27,17 @@ open class Attollo : JavaPlugin() {
         logger.info("Using elevatorBlock: $elevatorBlock")
         server.pluginManager.registerEvents(AttolloListener(this), this)
         server.pluginManager.registerEvents(UpdateCheckerListener(this), this)
+        updateChecker()
+    }
+
+    override fun onDisable() {
+        updateService.shutdown()
+    }
+
+    private fun updateChecker() {
+        updateService = UpdateService(this)
+        updateService.run()
+        updateService.notifyConsole(componentLogger)
     }
 
 }

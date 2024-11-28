@@ -1,13 +1,14 @@
 package dev.themeinerlp.attollo
 
 import dev.themeinerlp.attollo.listener.AttolloListener
+import dev.themeinerlp.attollo.listener.UpdateCheckerListener
 import org.bukkit.Material
 import org.bukkit.plugin.java.JavaPlugin
 
 open class Attollo : JavaPlugin() {
 
-
     lateinit var elevatorBlock: Material
+
     override fun onLoad() {
         saveDefaultConfig()
     }
@@ -23,6 +24,7 @@ open class Attollo : JavaPlugin() {
         elevatorBlock = material ?: Material.DAYLIGHT_DETECTOR
         logger.info("Using elevatorBlock: $elevatorBlock")
         server.pluginManager.registerEvents(AttolloListener(this), this)
+        server.pluginManager.registerEvents(UpdateCheckerListener(this), this)
     }
 
 }

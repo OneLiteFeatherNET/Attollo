@@ -77,6 +77,10 @@ bukkit {
             description = "Allows the player to use the plugin"
             default = Default.TRUE
         }
+        register("attollo.update") {
+            description = "Allows the player to see update notifications"
+            default = Default.OP
+        }
     }
     commands {
         register("attollo") {

@@ -29,7 +29,7 @@ class AttolloListener(private val attollo: Attollo) : Listener {
     private fun handleElevator(player: Player, up: Boolean = false) {
         if (!player.hasPermission(USE_PERMISSION)) return
 
-        val location = player.location
+        val location = player.location.subtract(0.0, 1.0, 0.0)
         val block = location.block
 
         if (block.type != attollo.elevatorBlock) return

@@ -19,6 +19,7 @@ Discord: https://discord.onelitefeather.net
 
 ## Permissions
 - `attollo.use` - Allows the player to use the elevator
+- `attollo.update` - Allows the player to receive update notifications
 
 ## Configuration
 ```yaml

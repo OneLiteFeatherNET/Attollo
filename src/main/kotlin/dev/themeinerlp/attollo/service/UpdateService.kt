@@ -5,6 +5,7 @@ import dev.themeinerlp.attollo.Attollo
 import dev.themeinerlp.attollo.LATEST_RELEASE_VERSION_REQUEST
 import dev.themeinerlp.attollo.NOTIFY_UPDATE_PERMISSION
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
@@ -58,10 +59,10 @@ class UpdateService(plugin: Attollo) : Runnable {
     private fun notifyPlayer(localVersion: Version, remoteVersion: Version?, player: Player) {
         player.sendMessage(
             MiniMessage.miniMessage().deserialize(
-                "<yellow><click:open_url:'https://hangar.papermc.io/OneLiteFeather/Attollo'>Your version (<local_version>) is older than our latest published version (<remote_version>). Please update as soon as possible to get continued support. Or click me to get on the download page!</click>",
+                "<yellow><download_url>Your version (<local_version>) is older than our latest published version (<remote_version>). Please update as soon as possible to get continued support. Or click me to get on the download page!",
                 Placeholder.component("local_version", Component.text(localVersion.toString())),
                 Placeholder.component("remote_version", Component.text(remoteVersion.toString())),
-                Placeholder.component("download_url", Component.text(DOWNLOAD_URL.format(remoteVersion.toString())))
+                Placeholder.styling("download_url", ClickEvent.openUrl(DOWNLOAD_URL.format(remoteVersion.toString())))
             )
         )
     }

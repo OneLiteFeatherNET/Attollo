@@ -4,8 +4,10 @@ import com.github.zafarkhaja.semver.Version
 import dev.themeinerlp.attollo.Attollo
 import dev.themeinerlp.attollo.LATEST_RELEASE_VERSION_REQUEST
 import dev.themeinerlp.attollo.NOTIFY_UPDATE_PERMISSION
+import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger
 import net.kyori.adventure.text.minimessage.MiniMessage
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.slf4j.LoggerFactory
@@ -36,7 +38,14 @@ class UpdateService(plugin: Attollo) : Runnable {
 
     fun notifyConsole(logger: ComponentLogger) {
         if (this.remoteVersion != null && remoteVersion?.isHigherThan(this.localVersion) == true) {
-            logger.warn(MiniMessage.miniMessage().deserialize("<yellow>Your version (${localVersion}) is older than our latest published version (${remoteVersion.toString()}). Please update as soon as possible to get continued support. Or use this link ${DOWNLOAD_URL.format(remoteVersion.toString())}"))
+            logger.warn(
+                MiniMessage.miniMessage().deserialize(
+                    "<yellow>Your version (<local_version>) is older than our latest published version (<remote_version>). Please update as soon as possible to get continued support. Or use this link <download_url>.",
+                    Placeholder.component("local_version", Component.text(localVersion.toString())),
+                    Placeholder.component("remote_version", Component.text(remoteVersion.toString())),
+                    Placeholder.component("download_url", Component.text(DOWNLOAD_URL.format(remoteVersion.toString())))
+                )
+            )
         }
     }
 
@@ -47,7 +56,14 @@ class UpdateService(plugin: Attollo) : Runnable {
     }
 
     private fun notifyPlayer(localVersion: Version, remoteVersion: Version?, player: Player) {
-        player.sendMessage(MiniMessage.miniMessage().deserialize("<yellow><click:open_url:'https://hangar.papermc.io/OneLiteFeather/Attollo'>Your version (${localVersion}) is older than our latest published version (${remoteVersion.toString()}). Please update as soon as possible to get continued support. Or click me to get on the download page!</click>"))
+        player.sendMessage(
+            MiniMessage.miniMessage().deserialize(
+                "<yellow><click:open_url:'https://hangar.papermc.io/OneLiteFeather/Attollo'>Your version (<local_version>) is older than our latest published version (<remote_version>). Please update as soon as possible to get continued support. Or click me to get on the download page!</click>",
+                Placeholder.component("local_version", Component.text(localVersion.toString())),
+                Placeholder.component("remote_version", Component.text(remoteVersion.toString())),
+                Placeholder.component("download_url", Component.text(DOWNLOAD_URL.format(remoteVersion.toString())))
+            )
+        )
     }
 
     private fun getNewerVersion(): Version? {

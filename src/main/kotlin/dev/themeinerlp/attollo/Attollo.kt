@@ -26,7 +26,6 @@ open class Attollo : JavaPlugin() {
         elevatorBlock = material ?: Material.DAYLIGHT_DETECTOR
         logger.info("Using elevatorBlock: $elevatorBlock")
         server.pluginManager.registerEvents(AttolloListener(this), this)
-        server.pluginManager.registerEvents(UpdateCheckerListener(this), this)
         updateChecker()
     }
 
@@ -38,6 +37,7 @@ open class Attollo : JavaPlugin() {
         updateService = UpdateService(this)
         updateService.run()
         updateService.notifyConsole(componentLogger)
+        server.pluginManager.registerEvents(UpdateCheckerListener(this), this)
     }
 
 }

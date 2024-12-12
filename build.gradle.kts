@@ -46,7 +46,7 @@ repositories {
 dependencies {
     compileOnly("io.papermc.paper:paper-api:$minecraftVersion-R0.1-SNAPSHOT")
     implementation("net.kyori:adventure-text-minimessage:4.17.0")
-
+    implementation("com.github.zafarkhaja:java-semver:0.10.2")
 
     // testing
     testImplementation(kotlin("test"))
@@ -76,6 +76,10 @@ bukkit {
         register("attollo.use") {
             description = "Allows the player to use the plugin"
             default = Default.TRUE
+        }
+        register("attollo.update") {
+            description = "Allows the player to see update notifications"
+            default = Default.OP
         }
     }
     commands {

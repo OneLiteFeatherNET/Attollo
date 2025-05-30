@@ -13,7 +13,7 @@ dependencyResolutionManagement {
         create("libs") {
             version("publishdata", "1.4.0")
             version("modrinth", "2.+")
-            version("hangar", "0.1.2")
+            version("hangar", "0.1.3")
             version("bukkit.yml", "0.6.0")
             version("paper.run", "2.3.1")
             version("shadow", "8.1.7")

@@ -3,7 +3,7 @@ import net.minecrell.pluginyml.bukkit.BukkitPluginDescription.Permission.Default
 import xyz.jpenilla.runpaper.task.RunServer
 
 plugins {
-    kotlin("jvm") version "2.0.0"
+    kotlin("jvm") version "2.1.0"
     alias(libs.plugins.publishdata)
     alias(libs.plugins.shadow)
     alias(libs.plugins.paper.run)
@@ -34,7 +34,7 @@ val supportedMinecraftVersions = listOf(
 
 repositories {
     mavenCentral()
-    maven("https://papermc.io/repo/repository/maven-public/")
+    maven("https://repo.papermc.io/repository/maven-public/")
 }
 
 dependencies {
@@ -64,6 +64,10 @@ paper {
         register("attollo.use") {
             description = "Allows the player to use the plugin"
             default = Default.TRUE
+        }
+        register("attollo.update") {
+            description = "Allows the player to see update notifications"
+            default = Default.OP
         }
     }
 }

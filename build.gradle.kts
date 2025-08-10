@@ -52,7 +52,7 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation("io.papermc.paper:paper-api:$minecraftVersion-R0.1-SNAPSHOT")
     testImplementation("com.github.seeseemelk:MockBukkit-v1.19:3.1.0")
-    testImplementation("io.mockk:mockk:1.14.2")
+    testImplementation("io.mockk:mockk:1.14.5")
 }
 
 kotlin {

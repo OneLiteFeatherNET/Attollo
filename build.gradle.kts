@@ -45,7 +45,7 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:$minecraftVersion-R0.1-SNAPSHOT")
-    implementation("net.kyori:adventure-text-minimessage:4.21.0")
+    implementation("net.kyori:adventure-text-minimessage:4.24.0")
     implementation("com.github.zafarkhaja:java-semver:0.10.2")
 
     // testing

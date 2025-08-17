@@ -35,9 +35,9 @@ fun Project.branchName(): String {
 
 fun Project.runGitCommand(args: List<String>): String {
     val byteOut = ByteArrayOutputStream()
-    exec {
-        commandLine = listOf("git") + args
-        standardOutput = byteOut
-    }
+//    exec {
+//        commandLine = listOf("git") + args
+//        standardOutput = byteOut
+//    }
     return byteOut.toString(Charsets.UTF_8.name()).trim()
 }

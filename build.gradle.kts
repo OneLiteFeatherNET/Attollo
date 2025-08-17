@@ -3,7 +3,7 @@ import net.minecrell.pluginyml.bukkit.BukkitPluginDescription.Permission.Default
 import xyz.jpenilla.runpaper.task.RunServer
 
 plugins {
-    kotlin("jvm") version "2.1.0"
+    kotlin("jvm") version "2.2.10"
     alias(libs.plugins.publishdata)
     alias(libs.plugins.shadow)
     alias(libs.plugins.paper.run)
@@ -40,6 +40,7 @@ repositories {
 dependencies {
     compileOnly(libs.paper)
     implementation(libs.adventure.minimessage)
+    implementation("com.github.zafarkhaja:java-semver:0.10.2")
 
     // testing
     testImplementation(kotlin("test"))

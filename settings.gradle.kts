@@ -16,7 +16,7 @@ dependencyResolutionManagement {
             version("hangar", "0.1.3")
             version("bukkit.yml", "0.6.0")
             version("paper.run", "2.3.1")
-            version("shadow", "9.0.0-beta15")
+            version("shadow", "9.2.2")
 
             plugin("publishdata","de.chojo.publishdata").versionRef("publishdata")
             plugin("modrinth", "com.modrinth.minotaur").versionRef("modrinth")

@@ -3,7 +3,7 @@ import net.minecrell.pluginyml.bukkit.BukkitPluginDescription.Permission.Default
 import xyz.jpenilla.runpaper.task.RunServer
 
 plugins {
-    kotlin("jvm") version "2.2.10"
+    kotlin("jvm") version "2.2.20"
     alias(libs.plugins.publishdata)
     alias(libs.plugins.shadow)
     alias(libs.plugins.paper.run)

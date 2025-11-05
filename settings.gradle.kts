@@ -15,7 +15,7 @@ dependencyResolutionManagement {
             version("modrinth", "2.+")
             version("hangar", "0.1.3")
             version("bukkit.yml", "0.6.0")
-            version("paper.run", "2.3.1")
+            version("paper.run", "3.0.2")
             version("shadow", "9.2.2")
             version("cyclonedx", "3.0.1")
 

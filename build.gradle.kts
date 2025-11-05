@@ -22,12 +22,6 @@ val supportedMinecraftVersions = listOf(
     "1.20.5",
     "1.20.6",
 )
-
-repositories {
-    mavenCentral()
-    maven("https://repo.papermc.io/repository/maven-public/")
-}
-
 dependencies {
     compileOnly("io.papermc.paper:paper-api:$minecraftVersion-R0.1-SNAPSHOT")
     implementation("net.kyori:adventure-text-minimessage:4.24.0")

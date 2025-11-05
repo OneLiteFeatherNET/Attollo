@@ -1,5 +1,12 @@
+import org.gradle.kotlin.dsl.mavenCentral
+import org.gradle.kotlin.dsl.repositories
+
 rootProject.name = "Attollo"
 dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        maven("https://repo.papermc.io/repository/maven-public/")
+    }
     versionCatalogs {
         create("libs") {
             version("publishdata", "1.4.0")

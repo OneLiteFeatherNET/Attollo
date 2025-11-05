@@ -14,26 +14,37 @@ plugins {
     jacoco
 }
 
-val minecraftVersion = "1.20.6"
+if (!File("$rootDir/.git").exists()) {
+    logger.lifecycle(
+        """
+    **************************************************************************************
+    You need to fork and clone this repository! Don't download a .zip file.
+    If you need assistance, consult the GitHub docs: https://docs.github.com/get-started/quickstart/fork-a-repo
+    **************************************************************************************
+    """.trimIndent()
+    ).also { System.exit(1) }
+}
 val supportedMinecraftVersions = listOf(
-    "1.20",
-    "1.20.1",
-    "1.20.2",
-    "1.20.3",
-    "1.20.4",
-    "1.20.5",
     "1.20.6",
+    "1.21",
+    "1.21.1",
+    "1.21.2",
+    "1.21.3",
+    "1.21.4",
+    "1.21.5",
+    "1.21.6",
+    "1.21.7",
+    "1.21.8",
+    "1.21.9",
+    "1.21.10"
 )
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:$minecraftVersion-R0.1-SNAPSHOT")
-    implementation("net.kyori:adventure-text-minimessage:4.24.0")
-    implementation("com.github.zafarkhaja:java-semver:0.10.2")
+    compileOnly(libs.paper)
+    implementation(libs.semver)
 
     // testing
-    testImplementation(kotlin("test"))
-    testImplementation("io.papermc.paper:paper-api:$minecraftVersion-R0.1-SNAPSHOT")
-    testImplementation("com.github.seeseemelk:MockBukkit-v1.19:3.1.0")
-    testImplementation("io.mockk:mockk:1.14.6")
+    testImplementation(libs.paper)
+    testImplementation(libs.mockbukkit)
 }
 java {
     toolchain {
@@ -42,9 +53,9 @@ java {
 }
 
 bukkit {
-    main = "dev.themeinerlp.attollo.Attollo"
+    main = "net.onelitefeather.attollo.Attollo"
     apiVersion = "1.20"
-    authors = listOf("TheMeinerLP")
+    authors = listOf("OneLiteFeather Network","TheMeinerLP")
     foliaSupported = true
 
     permissions {

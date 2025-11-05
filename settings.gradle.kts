@@ -17,6 +17,7 @@ dependencyResolutionManagement {
             version("bukkit.yml", "0.6.0")
             version("paper.run", "2.3.1")
             version("shadow", "9.2.2")
+            version("cyclonedx", "3.0.1")
 
             // Libraries
             library("paper", "io.papermc.paper", "paper-api").versionRef("paper")
@@ -30,6 +31,7 @@ dependencyResolutionManagement {
             plugin("bukkit.yml", "net.minecrell.plugin-yml.bukkit").versionRef("bukkit.yml")
             plugin("paper.run", "xyz.jpenilla.run-paper").versionRef("paper.run")
             plugin("shadow", "com.gradleup.shadow").versionRef("shadow")
+            plugin("cyclonedx", "org.cyclonedx.bom").versionRef("cyclonedx")
         }
     }
 }

@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/OneLiteFeatherNET/Attollo/compare/v1.4.0...v1.5.0) (2025-11-05)
+
+
+### Features
+
+* **deps:** add CycloneDX plugin and version management to build configuration ([97bd9a9](https://github.com/OneLiteFeatherNET/Attollo/commit/97bd9a965e6ddd9858b91c0513ec347307c18b0c))
+
 # [1.4.0](https://github.com/OneLiteFeatherNET/Attollo/compare/v1.3.4...v1.4.0) (2025-11-05)
 
 

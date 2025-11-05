@@ -1,13 +1,4 @@
 rootProject.name = "Attollo"
-pluginManagement {
-    repositories {
-        mavenCentral()
-        maven("https://eldonexus.de/repository/maven-public/")
-        gradlePluginPortal()
-    }
-}
-includeBuild("build-logic")
-
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {

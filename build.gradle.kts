@@ -12,9 +12,6 @@ plugins {
     `maven-publish`
 }
 
-group = "net.onelitefeather"
-version = "1.4.0"
-
 val minecraftVersion = "1.20.6"
 val supportedMinecraftVersions = listOf(
     "1.20",

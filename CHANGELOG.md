@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/OneLiteFeatherNET/Attollo/compare/v1.5.0...v1.5.1) (2025-11-05)
+
+
+### Bug Fixes
+
+* **project:** Triggerbuild ([f917a96](https://github.com/OneLiteFeatherNET/Attollo/commit/f917a968a5534c43c532ea3ae0e4f2b3d51d89b0))
+
 # [1.5.0](https://github.com/OneLiteFeatherNET/Attollo/compare/v1.4.0...v1.5.0) (2025-11-05)
 
 

@@ -1,0 +1,16 @@
+# [1.4.0](https://github.com/OneLiteFeatherNET/Attollo/compare/v1.3.4...v1.4.0) (2025-11-05)
+
+
+### Bug Fixes
+
+* get block *below* the player ([7ff178d](https://github.com/OneLiteFeatherNET/Attollo/commit/7ff178d0985062fcfdf5916d52c00ec500408cd2))
+
+
+### Features
+
+* added update checker ([9b81e86](https://github.com/OneLiteFeatherNET/Attollo/commit/9b81e863fe26fd211fcecdb6a1810213a427cba5))
+* adding log info for block config ([48e0103](https://github.com/OneLiteFeatherNET/Attollo/commit/48e0103f5d470d19b767c9ef3404001e2055e735))
+* **ci:** update CI workflows for release process and branch handling ([370640a](https://github.com/OneLiteFeatherNET/Attollo/commit/370640a584a2c0e176063760412976bcb90412b6))
+* **elevator:** implement elevator functionality with event listeners and service layer ([181ad05](https://github.com/OneLiteFeatherNET/Attollo/commit/181ad0572d7dc430ff4e9edbf2a4b089fdf38118))
+* **release:** add semantic release configuration and changelog management ([4c5a3db](https://github.com/OneLiteFeatherNET/Attollo/commit/4c5a3dbcaa9bea4e82ebd44f6cb93b4ee8760661))
+* **update:** implement update checking service and notification system ([54398d5](https://github.com/OneLiteFeatherNET/Attollo/commit/54398d51638df32b3cc26c48d3b6f651dea7f7ec))

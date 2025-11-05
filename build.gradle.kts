@@ -1,15 +1,17 @@
 import io.papermc.hangarpublishplugin.model.Platforms
 import net.minecrell.pluginyml.bukkit.BukkitPluginDescription.Permission.Default
 import xyz.jpenilla.runpaper.task.RunServer
+import xyz.jpenilla.runtask.pluginsapi.PluginDownloadService
+import xyz.jpenilla.runtask.service.DownloadsAPIService
 
 plugins {
-    kotlin("jvm") version "2.2.20"
+    java
     alias(libs.plugins.shadow)
     alias(libs.plugins.paper.run)
     alias(libs.plugins.bukkit.yml)
     alias(libs.plugins.hangar)
     alias(libs.plugins.modrinth)
-    `maven-publish`
+    jacoco
 }
 
 val minecraftVersion = "1.20.6"
@@ -33,9 +35,8 @@ dependencies {
     testImplementation("com.github.seeseemelk:MockBukkit-v1.19:3.1.0")
     testImplementation("io.mockk:mockk:1.14.6")
 }
-
-kotlin {
-    jvmToolchain {
+java {
+    toolchain {
         languageVersion.set(JavaLanguageVersion.of(21))
     }
 }
@@ -65,20 +66,26 @@ bukkit {
 
 
 tasks {
-    named<Jar>("jar") {
-        archiveClassifier.set("unshaded")
-    }
     named("build") {
         dependsOn(shadowJar)
-    }
-    shadowJar {
-        archiveClassifier.set("")
     }
     test {
         useJUnitPlatform()
         testLogging {
             events("passed", "skipped", "failed")
+            exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+            showStandardStreams = false
         }
+        maxParallelForks = 1
+
+        // Generate test reports
+        reports {
+            junitXml.required.set(true)
+            html.required.set(true)
+        }
+
+        // Test result publication
+        finalizedBy(jacocoTestReport)
     }
     supportedMinecraftVersions.forEach { serverVersion ->
         register<RunServer>("run-$serverVersion") {
@@ -89,12 +96,37 @@ tasks {
             pluginJars(rootProject.tasks.shadowJar.map { it.archiveFile }.get())
         }
     }
-    register<RunServer>("runFolia") {
-        downloadsApiService.set(xyz.jpenilla.runtask.service.DownloadsAPIService.folia(project))
-        minecraftVersion(minecraftVersion)
-        group = "run paper"
-        runDirectory.set(file("run-folia"))
-        jvmArgs("-DPaper.IgnoreJavaVersion=true", "-Dcom.mojang.eula.agree=true")
+    supportedMinecraftVersions.forEach { serverVersion ->
+        register<RunServer>("run-folia-$serverVersion") {
+            minecraftVersion(serverVersion)
+            jvmArgs("-DPaper.IgnoreJavaVersion=true", "-Dcom.mojang.eula.agree=true")
+            group = "run folia"
+            runDirectory.set(file("run-folia-$serverVersion"))
+            pluginJars(rootProject.tasks.shadowJar.map { it.archiveFile }.get())
+            downloadsApiService.convention(DownloadsAPIService.folia(project))
+            pluginDownloadService.convention(PluginDownloadService.paper(project))
+        }
+    }
+
+    shadowJar {
+        archiveClassifier.set("")
+        relocate("org.bstats", "net.onelitefeather.attollo.org.bstats")
+        dependsOn(jar)
+    }
+    this.modrinth {
+        dependsOn(shadowJar)
+    }
+
+    this.publishAllPublicationsToHangar {
+        dependsOn(shadowJar)
+    }
+
+    jacocoTestReport {
+        dependsOn(test)
+        reports {
+            xml.required.set(true)
+            html.required.set(true)
+        }
     }
 }
 

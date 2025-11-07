@@ -9,7 +9,7 @@ dependencyResolutionManagement {
             // Libraries versions
             version("paper", "1.21.10-R0.1-SNAPSHOT")
             version("semver", "0.10.2")
-            version("mockbukkit", "4.97.0")
+            version("mockbukkit", "4.97.1")
             // Plugins versions
             version("publishdata", "1.4.0")
             version("modrinth", "2.+")

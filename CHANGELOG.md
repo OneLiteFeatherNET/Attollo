@@ -1,3 +1,10 @@
+## [1.5.2](https://github.com/OneLiteFeatherNET/Attollo/compare/v1.5.1...v1.5.2) (2025-11-08)
+
+
+### Bug Fixes
+
+* **deps:** update dependency org.mockbukkit.mockbukkit:mockbukkit-v1.21 to v4.98.0 ([58c26bf](https://github.com/OneLiteFeatherNET/Attollo/commit/58c26bf87387c943fbe459292ac02a081e5d44ee))
+
 ## [1.5.1](https://github.com/OneLiteFeatherNET/Attollo/compare/v1.5.0...v1.5.1) (2025-11-05)
 
 

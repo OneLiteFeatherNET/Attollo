@@ -16,7 +16,7 @@ dependencyResolutionManagement {
             version("hangar", "0.1.4")
             version("bukkit.yml", "0.6.0")
             version("paper.run", "3.0.2")
-            version("shadow", "9.3.0")
+            version("shadow", "9.3.1")
             version("cyclonedx", "3.1.0")
 
             // Libraries

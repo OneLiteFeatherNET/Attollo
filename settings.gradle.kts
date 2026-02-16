@@ -17,7 +17,7 @@ dependencyResolutionManagement {
             version("bukkit.yml", "0.6.0")
             version("paper.run", "3.0.2")
             version("shadow", "9.3.1")
-            version("cyclonedx", "3.1.0")
+            version("cyclonedx", "3.1.1")
 
             // Libraries
             library("paper", "io.papermc.paper", "paper-api").versionRef("paper")

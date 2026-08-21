@@ -6,7 +6,14 @@
   "packages": {
     ".": {
       "package-name": "Attollo",
-      "changelog-path": "CHANGELOG.md"
+      "changelog-path": "CHANGELOG.md",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "build.gradle.kts"
+        }
+      ]
     }
-  }
+  },
+  "bootstrap-sha": "1eb2ddfaacc861b3277458527c8f823a6372319a"
 }
